@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>С днём рождения, Ксюша!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div id="sparks" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="kicker">golden hour</p>
+    <h1>С днём рождения,<br /><span>Ксюша</span></h1>
+    <p class="lead">Отодвинь шторы — и начнётся твой день.</p>
+
+    <button class="window" id="sunrise" type="button" aria-label="Открыть шторы">
+      <span class="curtain left"></span>
+      <span class="curtain right"></span>
+      <span class="sill"></span>
+      <span class="sun"></span>
+    </button>
+    <p class="hint" id="windowHint">Нажми на окно</p>
+    <p class="wish is-hidden" id="windowWish">Свет включён. Ксюша, этот год — твой рассвет.</p>
+
+    <nav class="map" aria-label="Сюрпризы">
+      <a href="#polaroids">Полароиды</a>
+      <a href="#tape">Микстейп</a>
+      <a href="#stars">Созвездие</a>
+      <a href="#cookies">Печенье</a>
+      <a href="#diary">Дневник</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section" id="polaroids">
+      <h2>Полароиды проявляются</h2>
+      <p class="section-lead">Кликни кадр — он проявится, как воспоминание.</p>
+      <div class="polaroids">
+        <button class="polaroid tilt-a" data-caption="Много смеха, даже в обычный вторник.">
+          <span class="photo">☀️</span>
+          <span class="caption">Нажми, чтобы проявить</span>
+        </button>
+        <button class="polaroid tilt-b" data-caption="Путешествие без идеального плана.">
+          <span class="photo">🌊</span>
+          <span class="caption">Нажми, чтобы проявить</span>
+        </button>
+        <button class="polaroid tilt-c" data-caption="Люди, с которыми легко молчать и легко орать.">
+          <span class="photo">🌙</span>
+          <span class="caption">Нажми, чтобы проявить</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="tape">
+      <h2>Микстейп на год</h2>
+      <p class="section-lead">Нажми трек — это не песня, это пожелание.</p>
+      <div class="cassette">
+        <div class="reels">
+          <span class="reel" id="reelL"></span>
+          <span class="reel" id="reelR"></span>
+        </div>
+        <ol class="tracks">
+          <li><button type="button" data-track="Пусть утро начинается без спешки.">01. Slow Morning</button></li>
+          <li><button type="button" data-track="Пусть будет дело, которое зажигает, а не выжигает.">02. Hot Streak</button></li>
+          <li><button type="button" data-track="Пусть кто-то вовремя скажет: ты крутая.">03. Voice Note</button></li>
+          <li><button type="button" data-track="Пусть тело будет сильным, а голова — тихой.">04. Soft Power</button></li>
+        </ol>
+        <p class="now-playing" id="nowPlaying">Нажми любой трек</p>
+      </div>
+    </section>
+
+    <section class="section" id="stars">
+      <h2>Собери созвездие</h2>
+      <p class="section-lead">Соедини звёзды по порядку — откроется слово.</p>
+      <div class="constellation" id="constellation">
+        <svg viewBox="0 0 320 180" aria-hidden="true">
+          <polyline id="starLine" points="" fill="none" stroke="#ffd7a1" stroke-width="2"></polyline>
+        </svg>
+        <button class="star" data-n="1" style="left:12%;top:58%">1</button>
+        <button class="star" data-n="2" style="left:32%;top:28%">2</button>
+        <button class="star" data-n="3" style="left:52%;top:46%">3</button>
+        <button class="star" data-n="4" style="left:70%;top:22%">4</button>
+        <button class="star" data-n="5" style="left:86%;top:52%">5</button>
+      </div>
+      <p class="wish" id="starWish"></p>
+    </section>
+
+    <section class="section" id="cookies">
+      <h2>Печенье с предсказанием</h2>
+      <p class="section-lead">Разломи любое — внутри записка.</p>
+      <div class="cookies">
+        <button class="cookie" data-fortune="Тебя ждут хорошие новости в самом обычном чате.">🥠</button>
+        <button class="cookie" data-fortune="Скоро будет вечер, который захочется пересматривать в памяти.">🥠</button>
+        <button class="cookie" data-fortune="То, что откладывала, получится легче, чем казалось.">🥠</button>
+      </div>
+    </section>
+
+    <section class="section" id="diary">
+      <h2>Страница дневника</h2>
+      <p class="section-lead">Открой — текст напишется сам.</p>
+      <button class="diary" id="diary" type="button" aria-label="Открыть дневник">
+        <span class="diary-cover" id="diaryCover">12 ноября · лично</span>
+        <span class="diary-page" id="diaryPage">Ксюша,</span>
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    <p>Этот рассвет — твой. С теплом ☀️</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
