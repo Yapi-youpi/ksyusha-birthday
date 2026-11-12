@@ -1,130 +1,85 @@
-const sky = document.getElementById("sky");
-const ctx = sky.getContext("2d");
-let fireflies = [];
+const junk = document.getElementById("junk");
+const bits = ["™", "!!", "kern", "lorem", "px", "wtf", "8pt", "а?", "нет", "да?"];
 
-function resize() {
-  sky.width = innerWidth;
-  sky.height = innerHeight;
-}
-
-function spawnFly() {
-  fireflies.push({
-    x: Math.random() * innerWidth,
-    y: Math.random() * innerHeight,
-    r: 1.2 + Math.random() * 1.8,
-    a: Math.random() * Math.PI * 2,
-    s: 0.008 + Math.random() * 0.02,
-  });
-}
-
-function drawSky() {
-  ctx.clearRect(0, 0, sky.width, sky.height);
-  fireflies.forEach((fly) => {
-    fly.a += fly.s;
-    fly.x += Math.cos(fly.a) * 0.35;
-    fly.y += Math.sin(fly.a * 0.8) * 0.25;
-    ctx.globalAlpha = 0.25 + Math.abs(Math.sin(fly.a)) * 0.75;
-    ctx.fillStyle = "#ffd7a1";
-    ctx.beginPath();
-    ctx.arc(fly.x, fly.y, fly.r, 0, Math.PI * 2);
-    ctx.fill();
-  });
-  requestAnimationFrame(drawSky);
-}
-
-addEventListener("resize", resize);
-resize();
-for (let i = 0; i < 40; i += 1) spawnFly();
-drawSky();
-
-const sparkLayer = document.getElementById("sparks");
-const sparkMarks = ["✨", "☀️", "💫"];
 document.addEventListener("click", (event) => {
-  const spark = document.createElement("span");
-  spark.className = "spark";
-  spark.textContent = sparkMarks[Math.floor(Math.random() * sparkMarks.length)];
-  spark.style.left = `${event.clientX - 8}px`;
-  spark.style.top = `${event.clientY - 8}px`;
-  sparkLayer.appendChild(spark);
-  setTimeout(() => spark.remove(), 900);
+  const bit = document.createElement("span");
+  bit.className = "junk-bit";
+  bit.textContent = bits[Math.floor(Math.random() * bits.length)];
+  bit.style.left = `${event.clientX - 8}px`;
+  bit.style.top = `${event.clientY - 8}px`;
+  bit.style.color = ["#ff00aa", "#111", "#00e5ff", "#ccff00"][Math.floor(Math.random() * 4)];
+  bit.style.transform = `rotate(${Math.floor(Math.random() * 40) - 20}deg)`;
+  junk.appendChild(bit);
+  setTimeout(() => bit.remove(), 860);
 });
 
-const sunrise = document.getElementById("sunrise");
-const windowHint = document.getElementById("windowHint");
-const windowWish = document.getElementById("windowWish");
-sunrise.addEventListener("click", () => {
-  sunrise.classList.toggle("open");
-  const open = sunrise.classList.contains("open");
-  windowHint.classList.toggle("is-hidden", open);
-  windowWish.classList.toggle("is-hidden", !open);
+const logo = document.getElementById("logo");
+let scale = 1;
+document.getElementById("bigger").addEventListener("click", () => {
+  scale = Math.min(scale + 0.18, 2.4);
+  logo.style.transform = `scale(${scale}) rotate(${(scale - 1) * 12}deg)`;
+  logo.style.transformOrigin = "left top";
+  document.getElementById("toolHint").textContent = scale >= 2.4
+    ? "клиент доволен. макет умер."
+    : `лого ×${scale.toFixed(1)}. ещё чуть-чуть.`;
 });
 
-document.querySelectorAll(".polaroid").forEach((card) => {
-  card.addEventListener("click", () => {
-    card.classList.add("developed");
-    card.querySelector(".caption").textContent = card.dataset.caption;
+const tiltables = document.querySelectorAll(".section, .hero, h1, .lead");
+document.getElementById("align").addEventListener("click", () => {
+  tiltables.forEach((el) => {
+    const rot = (Math.random() * 14 - 7).toFixed(1);
+    el.style.transform = `rotate(${rot}deg)`;
+  });
+  document.getElementById("toolHint").textContent = "выровняла. (нет)";
+});
+
+document.getElementById("contrast").addEventListener("click", () => {
+  document.body.classList.toggle("contrast-bomb");
+  document.getElementById("toolHint").textContent = document.body.classList.contains("contrast-bomb")
+    ? "доступность: мы её видели. мельком."
+    : "вернула. почти.";
+});
+
+document.querySelectorAll(".sticker").forEach((sticker) => {
+  sticker.addEventListener("click", () => {
+    sticker.classList.add("open");
+    sticker.textContent = sticker.dataset.text;
   });
 });
 
-const cassette = document.querySelector(".cassette");
-const nowPlaying = document.getElementById("nowPlaying");
-document.querySelectorAll(".tracks button").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tracks button").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    cassette.classList.add("playing");
-    nowPlaying.textContent = `♪ ${btn.dataset.track}`;
-  });
-});
-
-const order = [];
-const line = document.getElementById("starLine");
-const starWish = document.getElementById("starWish");
-const points = {
-  1: "38,104",
-  2: "102,50",
-  3: "166,83",
-  4: "224,40",
-  5: "275,94",
-};
-
-document.querySelectorAll(".star").forEach((star) => {
-  star.addEventListener("click", () => {
-    const n = Number(star.dataset.n);
-    if (order.includes(n)) return;
-    if (n !== order.length + 1) {
-      starWish.textContent = "По порядку: 1 → 2 → 3 → 4 → 5";
-      return;
-    }
-    star.classList.add("on");
-    order.push(n);
-    line.setAttribute("points", order.map((i) => points[i]).join(" "));
-    if (order.length === 5) {
-      starWish.textContent = "Сияй. Созвездие собрано — Ксюша, ты в центре кадра.";
+const kern = document.getElementById("kern");
+const letters = [...kern.querySelectorAll("button")];
+let smashed = 0;
+letters.forEach((letter) => {
+  letter.addEventListener("click", () => {
+    smashed += 1;
+    letter.style.transform = `translateX(${-12 * smashed}px) rotate(${smashed * 4}deg)`;
+    if (smashed >= 5) {
+      kern.classList.add("tight");
+      document.getElementById("kernWish").textContent = "КСЮША. плотно. как дедлайн и любовь.";
     }
   });
 });
 
-document.querySelectorAll(".cookie").forEach((cookie) => {
-  cookie.addEventListener("click", () => {
-    if (cookie.classList.contains("broken")) return;
-    cookie.classList.add("broken");
-    cookie.textContent = cookie.dataset.fortune;
+document.querySelectorAll(".swatches button").forEach((swatch) => {
+  swatch.addEventListener("click", () => {
+    document.body.style.backgroundColor = swatch.dataset.hex;
+    document.getElementById("swatchWish").textContent = `${swatch.dataset.hex} — «сделайте поярче» (с)`;
   });
 });
 
-const diaryText =
-  "Ксюша,\n\nпусть этот год будет ярче штор на окне: много света, своих людей и смелых «да».\n\nС днём рождения ☀️";
-const diaryPage = document.getElementById("diaryPage");
+const mailText =
+  "Ксюша,\n\nможем чуть кривее? и шрифтов побольше. и чтобы «вау». и чтобы как у конкурентов, но иначе.\n\nкороче: с днём рождения. ты дизайнер от бога и от дедлайна.\n\nп.с. правки пришлю в субботу вечером.";
+const mailPage = document.getElementById("mailPage");
 let typing = false;
-document.getElementById("diary").addEventListener("click", () => {
+document.getElementById("mail").addEventListener("click", () => {
   if (typing) return;
   typing = true;
-  diaryPage.textContent = "";
+  mailPage.textContent = "";
   let i = 0;
   const timer = setInterval(() => {
-    diaryPage.textContent += diaryText[i];
+    mailPage.textContent += mailText[i];
     i += 1;
-    if (i >= diaryText.length) clearInterval(timer);
-  }, 24);
+    if (i >= mailText.length) clearInterval(timer);
+  }, 18);
 });
