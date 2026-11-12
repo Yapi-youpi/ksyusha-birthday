@@ -35,24 +35,30 @@ body {
   transform: rotate(-3deg);
 }
 
-#junk {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  pointer-events: none;
-}
-
 .banner {
   position: relative;
-  z-index: 4;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
   background: var(--hot);
   color: var(--yell);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.85rem;
   font-weight: 700;
   border-bottom: 4px solid #111;
-  transform: rotate(-1.2deg);
-  margin: 8px -10px 0;
+  margin: 8px 0 0;
+}
+
+.ticker {
+  margin: 6px 0;
+  white-space: nowrap;
+  display: inline-block;
+  animation: ticker 22s linear infinite;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .stamp {
@@ -73,7 +79,8 @@ body {
 
 .comment {
   position: absolute;
-  z-index: 5;
+  z-index: 1;
+  pointer-events: none;
   font-family: Caveat, cursive;
   font-size: 1.35rem;
   color: #0044ff;
@@ -84,7 +91,12 @@ body {
 .c1 { top: 120px; right: 6vw; }
 .c2 { top: 52vh; left: 3vw; transform: rotate(7deg); }
 
-.hero, .section, footer { position: relative; z-index: 2; }
+.hero, .section, footer, .toolbar, button {
+  position: relative;
+  z-index: 2;
+}
+
+button { touch-action: manipulation; }
 
 .hero {
   padding: 48px 16px 20px;
@@ -324,7 +336,9 @@ h2.wrong { letter-spacing: 0.4em; background: #111; }
 .is-hidden { display: none; }
 
 .junk-bit {
-  position: absolute;
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
   font-family: Russo One, sans-serif;
   font-size: 1.1rem;
   animation: yeet 0.85s ease-out forwards;
